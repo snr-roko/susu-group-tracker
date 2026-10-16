@@ -43,7 +43,10 @@ public class CollectionPeriodEntity {
     Integer numberOfWeeks;
 
     @Column(nullable=false)
-    Integer currentWeek;
+    Integer activeWeek = 1;
+
+    @Column(nullable=false)
+    Boolean completed = false;
 
     @CreationTimestamp 
     Instant createdAt;
