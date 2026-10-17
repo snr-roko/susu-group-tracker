@@ -8,7 +8,7 @@ import lombok.Data;
 @Data 
 public class MemberAccountTransactionDto {
 
-    private UUID memberAccountId;
+    private UUID memberId;
     private BigDecimal amount;
     private TransactionTypeEnum transactionType;
 }

@@ -1,6 +1,8 @@
 package com.snr_roko.susu_group_tracker.entities;
 
+import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -44,8 +47,11 @@ public class MemberEntity {
     @ManyToOne(optional = false)
     GroupEntity group;
 
-    @JoinColumn(name="account_id", nullable=false)
-    MemberAccountEntity memberAccount;
+    @Column(nullable=false, precision=19, scale=2)
+    BigDecimal accountBalance = BigDecimal.ZERO;
+
+    @OneToMany(mappedBy="memberAccount")
+    List<CollectionPayments> collectionPayments;
 
     @CreationTimestamp 
     Instant createdAt;
