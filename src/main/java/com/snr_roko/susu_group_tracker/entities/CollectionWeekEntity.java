@@ -1,6 +1,7 @@
 package com.snr_roko.susu_group_tracker.entities;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,6 +14,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -43,6 +46,13 @@ public class CollectionWeekEntity {
 
     @Column(nullable=false)
     Boolean completed = false;
+
+    @OneToMany(mappedBy="collectionWeek")
+    List<CollectionPayments> collectionPayments;
+
+    @OneToOne
+    @JoinColumn(name="beneficiary_id", nullable=false)
+    MemberEntity beneficiary;
 
     @CreationTimestamp 
     Instant createdAt;
