@@ -1,5 +1,6 @@
 package com.snr_roko.susu_group_tracker.entities;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -47,6 +48,9 @@ public class CollectionPeriodEntity {
 
     @Column(nullable=false)
     Boolean completed = false;
+
+    @Column(nullable=false)
+    BigDecimal weeklyAmount;
 
     @CreationTimestamp 
     Instant createdAt;
