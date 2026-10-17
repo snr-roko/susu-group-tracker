@@ -18,7 +18,7 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 @Entity 
-@Table(name="collection_periods")
+@Table(name="collection_payments")
 @Getter 
 @Setter 
 @NoArgsConstructor 

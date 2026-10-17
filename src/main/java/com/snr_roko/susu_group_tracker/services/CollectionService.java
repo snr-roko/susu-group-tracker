@@ -62,7 +62,14 @@ public class CollectionService {
         Boolean completed = memberCollectionReport.stream().allMatch(report -> report.getAmountPaid().compareTo(collectionPeriod.getWeeklyAmount()) >= 0);
         
         if(!completed){
-            throw new IllegalArgumentException("Error: Some Members are owing, check report");
+            StringBuilder sb = new StringBuilder("Week cannot be closed. Some members are owing: ");
+            for(MemberCollectionPaymentReport report : memberCollectionReport){
+                BigDecimal owed = collectionPeriod.getWeeklyAmount().subtract(report.getAmountPaid());
+                if(owed.compareTo(BigDecimal.ZERO) > 0){
+                    sb.append(report.getName()).append(" owes GHS ").append(owed).append("; ");
+                }
+            }
+            throw new IllegalArgumentException(sb.toString());
         }
         
         collectionWeek.setCompleted(completed);

@@ -21,6 +21,7 @@ import com.snr_roko.susu_group_tracker.repositories.CollectionPaymentRepository;
 import com.snr_roko.susu_group_tracker.repositories.CollectionWeekRepository;
 import com.snr_roko.susu_group_tracker.repositories.GroupRepository;
 import com.snr_roko.susu_group_tracker.repositories.MemberRepository;
+import com.snr_roko.susu_group_tracker.entities.GroupEntity;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,11 +36,16 @@ public class MemberService {
     private final CollectionPaymentRepository collectionPaymentRepository;
 
     public MemberResponseDto addMember(MemberRequestDto memberDetails) {
+        GroupEntity group = groupRepository.findById(memberDetails.getGroupId()).orElseThrow(() -> new ResourceNotFoundException("Group not found"));
+
+        if(memberRepository.existsByGroupAndName(group, memberDetails.getName())){
+            throw new IllegalArgumentException("Member already exists in this group");
+        }
+
         MemberEntity newMember = new MemberEntity();
-        
         newMember.setName(memberDetails.getName());
         newMember.setPhoneNumber(memberDetails.getPhoneNumber());
-        newMember.setGroup(groupRepository.findById(memberDetails.getGroupId()).orElseThrow(() -> new ResourceNotFoundException("Group not found")));
+        newMember.setGroup(group);
 
         return modelMapper.map(memberRepository.save(newMember), MemberResponseDto.class);
     }
@@ -83,6 +89,10 @@ public class MemberService {
 
     public MemberAccountResponseDto payCollection(CollectionTransactionDto collectionTransactionDetails) {
         MemberEntity memberAccount = memberRepository.findById(collectionTransactionDetails.getMemberAccountId()).orElseThrow(() -> new ResourceNotFoundException("Member account not found"));
+
+        if(collectionTransactionDetails.getAmount() == null || collectionTransactionDetails.getAmount().compareTo(BigDecimal.ZERO) <= 0){
+            throw new IllegalArgumentException("Payment amount must be greater than zero");
+        }
 
         // check if the member has enough balance
         if(memberAccount.getAccountBalance().compareTo(collectionTransactionDetails.getAmount()) < 0) {
