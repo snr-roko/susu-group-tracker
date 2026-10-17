@@ -121,6 +121,13 @@ public class MemberService {
 
         memberAccount.setAccountBalance(transact(TransactionTypeEnum.WITHDRAWAL, collectionTransactionDetails.getAmount(), memberAccount.getAccountBalance()));
 
+        // record the payment
+        CollectionPayments payment = new CollectionPayments();
+        payment.setCollectionWeek(collectionWeek);
+        payment.setMemberAccount(memberAccount);
+        payment.setAmount(collectionTransactionDetails.getAmount());
+        collectionPaymentRepository.save(payment);
+
         // get the beneficiary
         MemberEntity beneficiary = collectionWeek.getBeneficiary();
 

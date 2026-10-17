@@ -44,6 +44,7 @@ public class CollectionService {
         collectionPeriod.setActiveWeek(previousCollectionWeek + 1);
         collectionWeek.setBeneficiary(beneficiary);
         collectionPeriodRepository.save(collectionPeriod);
+        collectionWeekRepository.save(collectionWeek);
         
         return modelMapper.map(collectionWeek, CollectionResponseDto.class);
     }
@@ -82,7 +83,7 @@ public class CollectionService {
         
         CollectionPeriodEntity collectionPeriod = collectionWeek.getCollectionPeriod();
         GroupEntity group = collectionPeriod.getGroup();
-        List<MemberEntity> members = group.getMembers();
+        List<MemberEntity> members = memberRepository.findByGroup(group);
 
         return members.stream()
             .map(member -> {

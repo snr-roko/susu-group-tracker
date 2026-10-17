@@ -1,5 +1,6 @@
 package com.snr_roko.susu_group_tracker.repositories;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,5 +13,7 @@ import com.snr_roko.susu_group_tracker.entities.MemberEntity;
 public interface MemberRepository extends JpaRepository<MemberEntity, UUID>{
 
     boolean existsByGroupAndName(GroupEntity group, String name);
+
+    List<MemberEntity> findByGroup(GroupEntity group);
 
 }
