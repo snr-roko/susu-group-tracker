@@ -44,6 +44,9 @@ public class MemberEntity {
     @ManyToOne(optional = false)
     GroupEntity group;
 
+    @JoinColumn(name="account_id", nullable=false)
+    MemberAccountEntity memberAccount;
+
     @CreationTimestamp 
     Instant createdAt;
 
