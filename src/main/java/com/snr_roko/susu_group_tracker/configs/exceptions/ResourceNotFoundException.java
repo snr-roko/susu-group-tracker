@@ -1,4 +1,4 @@
-package com.snr_roko.exceptions;
+package com.snr_roko.susu_group_tracker.configs.exceptions;
 
 public class ResourceNotFoundException extends RuntimeException{
 
